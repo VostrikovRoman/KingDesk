@@ -13,6 +13,8 @@
             <input type="text" id="name" name="name" class="form-control text edit_profile" value="{{employer.name}}">
             <label for="lastname" class="text bold edit_profile">Отчество:</label>
             <input type="text" id="lastname" name="lastname" class="form-control text edit_profile" value="{{employer.lastname}}">
+            <label for="birthday" class="text bold edit_profile">Дата рождения:</label>
+            <input type="date" id="birthday" name="birthday" class="form-control text edit_profile" value="{{employer.birthday.year}}-{%for i in months%}{%if employer.birthday.month == i.id%}{{i.alternate_name}}{% endif %}{%endfor%}-{%if employer.birthday.day < 10 %}0{%endif%}{{employer.birthday.day}}">
             <label for="phone" class="text bold edit_profile">Телефон:</label>
             <input type="tel" id="phone" name="phone" class="form-control text edit_profile" value="{{employer.phone}}">
             {% if user.id != employer.id %}

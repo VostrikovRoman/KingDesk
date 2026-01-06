@@ -23,6 +23,7 @@ class Employers(models.Model):
     photo = models.ImageField(blank=True, upload_to='images', default=None, null=True)
     post_id = models.ForeignKey('Posts', on_delete=models.CASCADE)
     division_id = models.ForeignKey('Divisions', on_delete=models.CASCADE)
+    birthday = models.DateField('Дата рождения', default='2000-01-01')
 
     def __str__(self):
         return self.surname

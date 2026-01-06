@@ -13,6 +13,8 @@
             <input type="text" id="name" name="name" class="form-control text edit_profile" value="{{ user.name }}">
             <label for="lastname" class="text bold edit_profile">Отчество:</label>
             <input type="text" id="lastname" name="lastname" class="form-control text edit_profile" value="{{ user.lastname }}">
+            <label for="birthday" class="text bold edit_profile">Дата рождения:</label>
+            <input type="date" id="birthday" name="birthday" class="form-control text edit_profile" value="{{user.birthday.year}}-{%for i in months%}{%if user.birthday.month == i.id%}{{i.alternate_name}}{% endif %}{%endfor%}-{%if user.birthday.day < 10%}0{%endif%}{{user.birthday.day}}">
             <label for="phone" class="text bold edit_profile">Телефон:</label>
             <input type="tel" id="phone" name="phone" class="form-control text edit_profile" value="{{ user.phone }}">
             {% if user.post_id.post_code == 'a-01' %}

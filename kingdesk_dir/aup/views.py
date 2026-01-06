@@ -22,7 +22,7 @@ def error(request):
     return render(request, 'sign_in/error_page.html', {'user':user, 'employers':employers, 'hbr_employers':hbr_employers, 'aup_employers':aup_employers, 'id_user':id_user})
 
 def current_shedule(request): 
-    date_now = datetime.now().date() + timedelta(hours=5)
+    date_now = datetime.now().date()
     hbr_employers = ['h-01', 'h-02', 'h-03', 'h-04', 'h-05']
     aup_employers = ['a-01', 'a-02', 'a-03']
     employers = Employers.objects.order_by('surname')
@@ -174,13 +174,14 @@ def edit_profile(request):
     aup_employers = ['a-01', 'a-02', 'a-03']
     employers = Employers.objects.order_by('surname')
     posts = Posts.objects.order_by('post_name')
+    months = Months.objects.all()
     divisions = Divisions.objects.order_by('division_name')
     user = None
     for i in employers:
         if i.username == request.user.username:
             user = i
             break
-    return render(request, 'aup/edit_profile.html', {'user':user, 'employers':employers, 'hbr_employers':hbr_employers, 'aup_employers':aup_employers, 'posts':posts, 'divisions':divisions})
+    return render(request, 'aup/edit_profile.html', {'user':user, 'employers':employers, 'hbr_employers':hbr_employers, 'aup_employers':aup_employers, 'posts':posts, 'months':months, 'divisions':divisions})
 
 def update_profile(request, user_id):
     try:
@@ -191,6 +192,7 @@ def update_profile(request, user_id):
             user.name = request.POST.get("name")
             user.lastname = request.POST.get("lastname")
             user.phone = request.POST.get("phone")
+            user.birthday = request.POST.get("birthday")
 
             if user.password != request.POST.get("password"):
                 user.password = request.POST.get("password")
@@ -215,6 +217,7 @@ def update_profile(request, user_id):
         return redirect ('aup_edit_profile')
     
 def employers(request):
+    date_now = datetime.now().date()
     hbr_employers = ['h-01', 'h-02', 'h-03', 'h-04', 'h-05']
     aup_employers = ['a-01', 'a-02', 'a-03']
     employers = Employers.objects.order_by('surname')
@@ -223,7 +226,7 @@ def employers(request):
         if i.username == request.user.username:
             user = i
             break
-    return render(request, 'aup/employers.html', {'user':user, 'employers':employers, 'hbr_employers':hbr_employers, 'aup_employers':aup_employers})
+    return render(request, 'aup/employers.html', {'user':user, 'date_now':date_now, 'employers':employers, 'hbr_employers':hbr_employers, 'aup_employers':aup_employers})
 
 class Employer_Detail_View(DetailView):
     model = Employers
@@ -263,6 +266,7 @@ def register_employer (request):
             user.post_id = post
             user.photo = request.FILES.get("photo")
             user.password = request.POST.get("password")
+            user.birthday = request.POST.get("birthday")
             User.objects.create_user(username=request.POST.get("username"), password=request.POST.get("password"), email=request.POST.get("email"))
             user.save()
 
@@ -316,6 +320,7 @@ def edit_employer(request, user_id):
     employers = Employers.objects.order_by('surname')
     posts = Posts.objects.order_by('post_name')
     genders = Genders.objects.all()
+    months = Months.objects.all()
     divisions = Divisions.objects.order_by('division_name')
     user = None
     employer = Employers.objects.get(id=user_id)
@@ -324,7 +329,7 @@ def edit_employer(request, user_id):
         if i.username == request.user.username:
             user = i
             break
-    return render(request, 'aup/edit_employer.html', {'user':user, 'employers':employers, 'hbr_employers':hbr_employers, 'aup_employers':aup_employers, 'posts':posts, 'divisions':divisions, 'genders':genders, 'employer':employer})
+    return render(request, 'aup/edit_employer.html', {'user':user, 'employers':employers, 'months':months, 'hbr_employers':hbr_employers, 'aup_employers':aup_employers, 'posts':posts, 'divisions':divisions, 'genders':genders, 'employer':employer})
 
 def update_employer(request, user_id):
     try:
@@ -340,6 +345,7 @@ def update_employer(request, user_id):
             employer.name = request.POST.get("name")
             employer.lastname = request.POST.get("lastname")
             employer.phone = request.POST.get("phone")
+            employer.birthday = request.POST.get("birthday")
 
             if employer.password != request.POST.get("password"):
                 employer.password = request.POST.get("password")
