@@ -1,0 +1,136 @@
+{% extends 'aup/layout.html' %}
+
+{% block title %}KING Desk - Текущие задачи{% endblock %}
+{% block content %}
+    <div class="content text-center">
+        <h1 class="title">Раздел пока не работает :(</h1>
+        <div style="display: none;">
+        <form action="" class="edit_profile">
+            <label for="task" class="text bold edit_profile">Задача</label>
+            <textarea name="task" id="task" class="form-control text edit_profile"></textarea>
+            <label for="employer" class="text bold edit_profile">Исполнитель</label>
+            <select name="employer" id="employer" class="form-control text edit_profile">
+                {% for i in employers %}
+                {% if i.division_id.id == user.division_id.id and i.post_id.post_code in hbr_employers %}
+                <option value="{{i.username}}">{{i.surname}} {{i.name}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <label for="date" class="text bold edit_profile">Дата</label>
+            <select name="date" id="date" class="form-control text edit_profile">
+                {% for i in current_shedules %}
+                {% if i.employer_id.username == user.username %}
+                <option value="{{i.date}}">{{i.week_day_id.alternate_name}}, {{i.date.day}}.
+                    {% for j in months %}
+                    {% if j.id == i.date.month %}
+                    {{j.alternate_name}}
+                    {% endif %}
+                    {% endfor %}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <div class="container text-center">
+                <button class="form-control edit_profile text" type="submit">Сохранить</button>
+            </div>
+        </form>
+        <div class="shedule_desk">
+            <div class="container text-center shedule">
+                <label for="employer_2" class="text bold edit_profile">Исполнитель</label>
+                <select name="employer_2" id="employer_2" class="form-control text edit_profile employer">
+                {% for i in employers %}
+                {% if i.division_id.id == user.division_id.id and i.post_id.post_code in hbr_employers %}
+                    <option value="{{i.username}}">{{i.surname}} {{i.name}}</option>
+                {% endif %}
+                {% endfor %}
+                </select>
+            </div>
+            {% for i in current_shedules %}
+            {% if i.employer_id.username == user.username %}
+            <div class="container text-center shedule">
+                <p class="day_week">{{i.week_day_id.alternate_name}}, {{i.date.day}}.
+                    {% for j in months %}
+                    {% if j.id == i.date.month %}
+                    {{j.alternate_name}}
+                    {% endif %}
+                    {% endfor %}
+                </p>
+                <div class="container shedule_stroke row ">
+                    <div class="col time_work">
+                        <p class="text time_work text_ct" id="{{i.date}}">
+                            {% if i.is_weekend == True %}
+                            {{'Выходной'}}
+                            {% else %}
+                            {{i.start_work}} - {{i.end_work}}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="no_look" style="display: none;">
+            {% for i in employers %}
+            {% if i.division_id.id == user.division_id.id %}
+            <div class="employers_ct" id="{{i.username}}">
+                {% for k in current_tasks %}
+                    {% if k.shedule_id.employer_id.username == i.username %}
+                    <input type="text" id="{{k.shedule_id.date}}" value="{{k.task}}" class="{{k.shedule_id.employer_id.username}}">
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endfor %}
+            <script>
+                window.addEventListener('load', () => {
+                    const employer_elem = document.getElementById('employer_2')
+                    const all_employers = document.querySelectorAll('.employers_ct')
+                    const all_texts = document.querySelectorAll('.text_ct')
+
+                    employer_elem.addEventListener('change', function() {
+                        let employer = this.value 
+                        for (let i = 0; i<all_texts.length; i++){
+                            all_texts[i].textContent = 'Нет задач'
+                        }
+                        for (let i = 0; i<all_employers.length; i++){
+                            if (all_employers[i].id == employer){
+                                const all_tasks = all_employers[i].children
+                                for (let j = 0; j<all_tasks.length; j++){
+                                    for (let k = 0; k<all_texts.length; k++){
+                                        if (all_texts[k].id == all_tasks[j].id){
+                                            all_texts[k].textContent = all_tasks[j].value
+                                        }
+                                    }
+                                }
+                                // for (let j = 0; j<all_texts.length; j++){
+                                //     all_texts[j].textContent = 'Нет задач'
+                                //     for (let k = 0; k<all_tasks.length; k++){
+                                //         if (all_tasks[k].className == all_employers[i].id){
+                                //             console.log(all_tasks[k].value + ' ' + all_tasks[k].className + ' ' + all_employers[i].id)
+                                //         }
+                                //     }
+                                // }
+                                // for (let j = 0; j<all_texts.length; j++){
+                                //     for (let k = 0; k<all_tasks.length; k++){
+                                //         if (all_tasks[k].className == all_employers[i].id){
+                                //             console.log(all_tasks[k])
+                                //         }
+                                        
+                                //         if (all_tasks[k].id == all_texts[j].id & all_tasks[k].className == all_employers[i].id){
+                                //             all_texts[j].textContent = all_tasks[k].value
+                                //         }
+                                //         else{
+                                //             all_texts[j].textContent = 'Нет задач'
+                                //         }
+                                //     }
+                                // }
+                            }
+                            
+                        }
+                    })
+                })
+            </script>
+        </div>
+        </div>
+    </div>
+{% endblock%}

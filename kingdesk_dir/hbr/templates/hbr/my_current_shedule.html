@@ -1,0 +1,86 @@
+{% extends 'hbr/layout.html' %}
+
+{% block title %}KING Desk - Моё расписание{% endblock %}
+{% block content %} 
+    <div class="content text-center">
+        <div class="happy_new_year PC" style="margin-top: 5%;">
+            <script src="//megatimer.ru/get/568dfb71e1a87a8c62652aaa419287d1.js"></script>
+        </div>
+        <h1 class="title">Моё расписание</h1>
+        <div class="shedule_desk">
+            {% for i in current_shedules %}
+            {% if i.employer_id.username == user.username %}
+            <div class="container text-center shedule">
+                <p class="day_week">{{i.week_day_id.alternate_name}}, {{i.date.day}}.
+                    {% for j in months %}
+                    {% if j.id == i.date.month %}
+                    {{j.alternate_name}}
+                    {% endif %}
+                    {% endfor %}
+                </p>
+                <div class="container shedule_stroke row">
+                    <div class="col time_work">
+                        <p class="text time_work">
+                            {% if i.is_weekend == True %}
+                            {{'Выходной'}}
+                            {% else %}
+                            {{i.start_work}} - {{i.end_work}}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col shedule_icon_container">
+                        {% if i.is_weekend == True %}
+                        <div class="shedule_icon weekend">В</div>
+                        {% else %}
+                            {% if i.start_work == i.employer_id.division_id.start_work %}
+                            <div class="shedule_icon start">О</div>
+                            {% else %}
+                            {% if i.end_work == i.employer_id.division_id.end_work %}
+                            <div class="shedule_icon end">З</div>
+                            {% else %}
+                            <div class="shedule_icon interval">П</div>
+                            {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="shedule_info">
+                        {% if i.is_weekend == False %}
+                        {% if i.start_work == i.employer_id.division_id.start_work%}
+                        <p class="text bold">Открытие с</p>
+                        <ul style="margin-bottom: 0px;">
+                            {% for j in current_shedules %}
+                            {% if j.start_work == i.start_work and j.employer_id.post_id.post_code in hbr_employers and j.is_weekend == False and j.employer_id.division_id.id == i.employer_id.division_id.id and j.date == i.date and j.employer_id.id != i.employer_id.id %}
+                            <li><a href="{% url 'hbr_employer_info' j.employer_id.id %}" class="list"><p class="text">{{j.employer_id.surname}} {{j.employer_id.name}}</p></a></li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        {% if i.end_work == i.employer_id.division_id.end_work %}
+                        <p class="text bold">Закрытие с</p>
+                        <ul style="margin-bottom: 0px;">
+                            {% for j in current_shedules %}
+                            {% if j.end_work == i.end_work and j.employer_id.post_id.post_code in hbr_employers and j.is_weekend == False and j.employer_id.division_id.id == i.employer_id.division_id.id and j.date == i.date and j.employer_id.id != i.employer_id.id %}
+                            <li><a href="{% url 'hbr_employer_info' j.employer_id.id %}" class="list"><p class="text">{{j.employer_id.surname}} {{j.employer_id.name}}</p></a></li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <p class="text bold" style="display: none;">Задачи на день:</p>
+                        <ul style="display: none;">
+                            {% for j in ctd %}
+                            {% if j.shedule_id.date == i.date and j.shedule_id.employer_id.username == user.username %}
+                            <li><p class="text">{{j.task}}</p></li>
+                            {% else %}
+                            <p class="text">Нет задач</p>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    
+{% endblock%}

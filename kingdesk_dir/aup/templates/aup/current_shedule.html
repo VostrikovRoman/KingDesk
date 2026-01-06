@@ -1,0 +1,307 @@
+{% extends 'aup/layout.html' %}
+
+{% block title %}KING Desk - Расписание на текущую неделю{% endblock %}
+{% block content %}
+<div class="content future_shedule text-center">
+    <div class="happy_new_year PC" style="margin-top: 5%;">
+        <script src="//megatimer.ru/get/568dfb71e1a87a8c62652aaa419287d1.js"></script>
+    </div>
+    <h1 class="title">Расписание на текущую неделю</h1>
+    <div class="table_ocs"> 
+        <div class="stroke_ocs"> 
+            <div class="name_ocs bold ocs text"></div>
+            {% for i in current_shedules %}
+            {% if i.employer_id.username == user.username %}
+            {% if date_now == i.date %}
+            <div class="time_ocs bold ocs text date_now">
+                {{i.date.day}}.
+                {% for j in months %}
+                {% if j.id == i.date.month %}
+                {{j.alternate_name}}
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="time_ocs bold ocs text">
+                {{i.date.day}}.
+                {% for j in months %}
+                {% if j.id == i.date.month %}
+                {{j.alternate_name}}
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="stroke_ocs">
+            <div class="name_ocs bold ocs text group_ocs">Тренеры-наставники</div>
+        </div>
+        {% for i in employers %}
+        {% if i.division_id == user.division_id and i.post_id.post_code == 'h-05' %}
+        <div class="stroke_ocs" id="{{i.username}}str">
+            <div class="name_ocs bold ocs text">
+                {{i.surname}} {{i.name}}
+            </div>
+            {% for j in current_shedules %}
+            {% if j.employer_id.username == i.username %}
+            {% if j.is_weekend == True %}
+            <div class="time_ocs text weekend fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">Вых</div>
+            {% else %}
+            {% if j.start_work == j.employer_id.division_id.start_work %}
+            <div class="time_ocs text start fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            {% if j.end_work == j.employer_id.division_id.end_work %}
+            <div class="time_ocs text end fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            <div class="time_ocs text fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %} 
+        <div class="stroke_ocs">
+            <div class="name_ocs bold ocs text group_ocs">ЧБРы</div>
+        </div>
+        {% for i in employers %}
+        {% if i.division_id == user.division_id and i.post_id.post_code != 'h-01' and i.post_id.post_code != 'h-05' and i.post_id.post_code in hbr_employers %}
+        <div class="stroke_ocs" id="{{i.username}}str">
+            <div class="name_ocs bold ocs text">
+                {{i.surname}} {{i.name}}
+            </div>
+            {% for j in current_shedules %}
+            {% if j.employer_id.username == i.username %}
+            {% if j.is_weekend == True %}
+            <div class="time_ocs text weekend fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">Вых</div>
+            {% else %}
+            {% if j.start_work == j.employer_id.division_id.start_work %}
+            <div class="time_ocs text start fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            {% if j.end_work == j.employer_id.division_id.end_work %}
+            <div class="time_ocs text end fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            <div class="time_ocs text fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}   
+        <div class="stroke_ocs">
+            <div class="name_ocs bold ocs text group_ocs">Работники зала</div>
+        </div>
+        {% for i in employers %}
+        {% if i.division_id == user.division_id and i.post_id.post_code == 'h-01' %}
+        <div class="stroke_ocs" id="{{i.username}}str">
+            <div class="name_ocs bold ocs text">
+                {{i.surname}} {{i.name}}
+            </div>
+            {% for j in current_shedules %}
+            {% if j.employer_id.username == i.username %}
+            {% if j.is_weekend == True %}
+            <div class="time_ocs text weekend fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">Вых</div>
+            {% else %}
+            {% if j.start_work == j.employer_id.division_id.start_work %}
+            <div class="time_ocs text start fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            {% if j.end_work == j.employer_id.division_id.end_work %}
+            <div class="time_ocs text end fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            <div class="time_ocs text fs" onclick="ClickTime(this)" id="{{j.date.day}} {{j.date.month}}str" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %} 
+    </div>
+    <div class="content row stop_future edit_employer">
+        <a href="{% url 'export_to_excel' %}" class="add_employer form-control">Экспорт в Excel</a>
+    </div>
+    <div class="content row stop_future edit_employer">
+        <a href="{% url 'import_from_excel' %}" class="add_employer form-control">Импорт из Excel</a>
+    </div>
+</div>
+<div class="control_panel">
+    <button class="text hide_panel" id="hide_panel_button">Скрыть панель</button>
+    <form class="form-control control_panel form_edit_current_shedule" method="POST" action="{% url 'aup_edit_cs' 0 %}">
+        {% csrf_token %}
+        <div class="form_column">
+            <select id="employer" class="form-control control_panel" name="employer">
+                {% for i in employers %}
+                {% if i.division_id == user.division_id and i.post_id.post_code in hbr_employers %}
+                <option id="{{i.id}}" class="option_employer" value="{{i.username}}">{{i.surname}} {{i.name}}</option>
+                {% endif%}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form_column special" id="place_for_clone">
+            <label for="weekend" class="text control_panel">Выходной</label>
+            <input type="checkbox" class="checkbox" id="weekend" name="is_weekend">
+            <input type="time" class="form-control control_panel" id="end_work" name="end_work">
+            <label for="end_work" class="text control_panel">до</label>
+            <input type="time" class="form-control control_panel" id="start_work" name="start_work">
+            <label for="start_work" class="text control_panel">с</label>
+        </div>
+        <script>
+            function ClickTime(elem) {
+                const event = new Event ('change')
+                let elem_user = elem.parentNode
+                let input_user = document.getElementById('employer')
+                input_user.value = String(elem_user.id).slice(0, -3)
+                input_user.dispatchEvent(event)
+                let input_date = document.getElementById('place_for_clone').querySelector('.user_date_clone')
+                input_date.value = String(elem.id).slice(0, -3)
+                input_date.dispatchEvent(event)
+            }
+            window.addEventListener('load', () => {
+                window.scrollTo(0, sessionStorage.getItem('scrollPos_current_shedule_aup') || 0);
+                document.querySelector('.table_ocs').scrollTo(sessionStorage.getItem('scrollPosX_current_shedule_aup'), 0 || 0)
+                sessionStorage.setItem('scrollPos_current_shedule_aup', 0) 
+                sessionStorage.setItem('scrollPosX_current_shedule_aup', 0)
+
+                document.getElementById('start_work').addEventListener('change', function(){
+                    document.getElementById('weekend').checked = false
+                })
+                document.getElementById('end_work').addEventListener('change', function(){
+                    document.getElementById('weekend').checked = false
+                })
+
+                const url = document.querySelector('.form_edit_current_shedule').action.slice(0,-1)
+                let parent = document.getElementById('place_for_clone')
+                let child = document.getElementById(document.getElementById('employer').value)
+
+                let clone = child.cloneNode(true);
+                parent.appendChild(clone);
+
+                let user_dates = document.getElementById('user_dates').querySelectorAll('.user_data_clone')
+                let all_start_works = document.querySelectorAll('.start_work_hidden')
+                let all_end_works = document.querySelectorAll('.end_work_hidden')
+                let all_weekends = document.querySelectorAll('.is_weekend_hidden')
+
+                document.getElementById('save_button').addEventListener('click', function() {
+                    sessionStorage.setItem('scrollPos_current_shedule_aup', window.scrollY)
+                    sessionStorage.setItem('scrollPosX_current_shedule_aup', document.querySelector('.table_ocs').scrollLeft)
+                })
+
+                document.getElementById('employer').addEventListener('change', function() {
+                    let option_employer = this.querySelectorAll('.option_employer')
+                    for (let i = 0; i<option_employer.length; i++){
+                        if (option_employer[i].value == this.value){
+                            document.querySelector('.form_edit_current_shedule').setAttribute('action', url+option_employer[i].id)
+                        }
+                    }
+                        
+                        
+                        let parent = document.getElementById('place_for_clone')
+                        let child = document.getElementById(this.value)
+                        let user_date_clone = parent.querySelector('.user_date_clone')
+
+                        parent.removeChild(user_date_clone);
+                        clone = child.cloneNode(true);
+                        parent.appendChild(clone);
+                        
+                        let user_dates = document.getElementById('user_dates').querySelectorAll('.user_data_clone')
+                        let user_dates_hidden = document.querySelectorAll('.option_date_hidden')
+                        let all_start_works = document.querySelectorAll('.start_work_hidden')
+                        let all_end_works = document.querySelectorAll('.end_work_hidden')
+                        let all_weekends = document.querySelectorAll('.is_weekend_hidden')
+
+                        document.getElementById('place_for_clone').querySelector('.user_date_clone').addEventListener('change', function() {
+                            
+                            for (let i = 0 ; i< user_dates.length; i++){
+                                if (document.getElementById('employer').value == user_dates[i].id){
+                                    for (let j=0; j<user_dates_hidden.length; j++){
+                                        if (user_dates_hidden[j].value == this.value ){
+                                            if (all_end_works[i].id == user_dates_hidden[j].textContent & all_start_works[i].id == user_dates_hidden[j].textContent & all_weekends[i].id == user_dates_hidden[j].textContent){
+                                                if (all_weekends[i].value == 'True'){
+                                                    document.getElementById('weekend').checked = true
+                                                    document.getElementById('start_work').value = '00:00:00'
+                                                    document.getElementById('end_work').value = '00:00:00'
+                                                }
+                                                else{
+                                                    document.getElementById('weekend').checked = false
+                                                    if (all_start_works[i].value == '8:00'){
+                                                        document.getElementById('start_work').value = '08:00:00'
+                                                    }
+                                                    else{
+                                                        document.getElementById('start_work').value = all_start_works[i].value
+                                                    }
+                                                    if (all_end_works[i].value == '0:00'){
+                                                        document.getElementById('end_work').value = '00:00:00'
+                                                    }
+                                                    else{
+                                                        document.getElementById('end_work').value = all_end_works[i].value
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        })
+                    })
+            });
+
+            
+        </script>
+        <div class="form_column">
+            <button type="submit" class="form-control control_panel" id="save_button">Сохранить</button>
+        </div>
+    </form>
+    <div class="not_look" style="display: none;">
+        <div class="user_dates" id="user_dates">
+            {% for j in employers %}
+                {% if j.division_id == user.division_id and j.post_id.post_code in hbr_employers %}
+                    <select class="user_date_clone_hidden form-control control_panel">
+                        {% for i in current_shedules %}
+                            {% if i.employer_id.id == j.id %}
+                                <option id="{{i.id}}" class="option_date_hidden" value="{{i.date.day}} {{i.date.month}}">{{i.date}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            {% endfor %}
+            {% for j in employers %}
+                {% if j.division_id == user.division_id and j.post_id.post_code in hbr_employers %}
+                    <select id="{{j.username}}" class="user_date_clone form-control control_panel" name="date">
+                        {% for i in current_shedules %}
+                            {% if i.employer_id.id == j.id %}
+                                <option id="{{i.id}}" class="option_date" value="{{i.date.day}} {{i.date.month}}">{{i.week_day_id.alternate_name}}, {{i.date.day}}.
+                                    {% for j in months %}
+                                        {% if j.id == i.date.month %}
+                                            {{j.alternate_name}}
+                                        {% endif %}
+                                    {% endfor %}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            {% endfor %}
+            {% for j in employers %}
+                {% if j.division_id == user.division_id and j.post_id.post_code in hbr_employers %}
+                    {% for i in current_shedules %}
+                        {% if i.employer_id.id == j.id %}
+                        <div id="{{j.username}}" class="user_data_clone">
+                            <input type="text" class="start_work_hidden" id="{{i.date}}" value="{{i.start_work}}">
+                            <input type="text" class="end_work_hidden" id="{{i.date}}" value="{{i.end_work}}">
+                            <input type="checkbox" class="is_weekend_hidden" id="{{i.date}}" value="{{i.is_weekend}}">
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+    </div>
+</div>
+{% endblock%}

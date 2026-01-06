@@ -1,0 +1,182 @@
+{% extends 'hbr/layout.html' %}
+
+{% block title %}KING Desk - Новогодняя пожелайка{% endblock %}
+{% block content %}
+<div class="content future_shedule text-center">
+    <div class="happy_new_year PC" style="margin-top: 5%;">
+            <script src="//megatimer.ru/get/568dfb71e1a87a8c62652aaa419287d1.js"></script>
+        </div>
+    <h1 class="title">Новогодняя пожелайка</h1>
+    <div class="shedule_desk">
+            {% for i in future_shedules %}
+            {% if i.employer_id.username == user.username %}
+            <div class="container text-center shedule"> 
+                <p class="day_week">{{i.week_day_id.alternate_name}}, {{i.date.day}}.
+                    {% for j in months %}
+                    {% if j.id == i.date.month %}
+                    {{j.alternate_name}}
+                    {% endif %}
+                    {% endfor %}
+                </p>
+                <div class="container shedule_stroke row" id="{{i.date.day}} {{i.date.month}}str" onclick="ClickTime(this)">
+                    <div class="col time_work">
+                        <p class="text time_work">
+                            {% if i.is_weekend == True %}
+                            {{'Выходной'}}
+                            {% else %}
+                            {% if i.start_work == i.employer_id.division_id.end_work and i.end_work == i.employer_id.division_id.end_work %}
+                            {{'П/н'}}
+                            {% else %}
+                            {{i.start_work}} - {{i.end_work}}
+                            {% endif %}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col shedule_icon_container">
+                        {% if i.is_weekend == True %}
+                            <div class="shedule_icon weekend">В</div>
+                        {% else %}
+                            {% if i.start_work == i.employer_id.division_id.end_work and i.end_work == i.employer_id.division_id.end_work  %}
+                                <div class="shedule_icon doesnt_matter">?</div>
+                            {% else %}
+                                {% if i.start_work == i.employer_id.division_id.start_work %}
+                                    <div class="shedule_icon start">О</div>
+                                {% else %}
+                                    {% if i.end_work == i.employer_id.division_id.end_work %}
+                                        <div class="shedule_icon end">З</div>
+                                    {% else %}
+                                        <div class="shedule_icon interval">П</div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="shedule_info">
+                        {% if i.comment != '' %}
+                        <p class="text bold">Комментарий: <p class="text" style="width: 90%; overflow-wrap: break-word; display: block; text-align: left;">{{i.comment}}</p></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    {% if user.division_id.is_stop == True %}
+    <div class="container text_center">
+        <p class="text bold">Что-то менять поздно - Пожелайка заблокирована. <br>Приходи позже :)</p>
+    </div>
+    {% endif %}
+    <div class="content row stop_future edit_employer" style="display: none;">
+        <a href="{% url 'abra' user.division_id.id %}" class="add_employer form-control">Не нажимать!</a>
+    </div>
+</div>
+{% if user.division_id.is_stop == False %}
+<div class="control_panel">
+    <button class="text hide_panel" id="hide_panel_button">Скрыть панель</button>
+    <form action="{% url 'hbr_fs_edit_hny' user.id %}" class="form-control control_panel" method="POST">
+        {% csrf_token %}
+        <div class="form_column">
+            <select id="date" class="form-control control_panel" name="date">
+                {% for i in future_shedules %}
+                {% if i.employer_id.id == user.id %}
+                <option id="{{i.id}}" class="option_date" value="{{i.date.day}} {{i.date.month}}">{{i.week_day_id.alternate_name}}, {{i.date.day}}.
+                    {% for j in months %}
+                    {% if j.id == i.date.month %}
+                    {{j.alternate_name}}
+                    {% endif %}
+                    {% endfor %}
+                </option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <div class="not_look" style="display: none;">
+                <select id="hidden_comment" style="display: none;" name="hidden_comment">
+                    {% for i in future_shedules %}
+                    {% if i.employer_id.id == user.id %}
+                    <option id="{{i.id}}" class="option_h_c" value="{{i.date.day}} {{i.date.month}}">{{i.comment}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                {% for i in future_shedules %}
+                {% if i.employer_id.id == user.id %}
+                <input type="text" class="start_work_hidden" value="{{i.start_work}}">
+                <input type="text" class="end_work_hidden" value="{{i.end_work}}">
+                <input type="checkbox" class="is_weekend_hidden" value="{{i.is_weekend}}">
+                {% endif %}
+                {% endfor %}
+            </div>
+            <label for="start_work" class="text control_panel">с</label>
+            <input type="time" class="form-control control_panel" id="start_work" name="start_work">
+            <label for="end_work" class="text control_panel">до</label>
+            <input type="time" class="form-control control_panel" id="end_work" name="end_work">
+            <input type="checkbox" class="checkbox" id="weekend" name="is_weekend">
+            <label for="weekend" class="text control_panel">Выходной</label>
+        </div>
+        <script>
+            function ClickTime(elem) {
+                const event = new Event ('change')
+                let input_date = document.getElementById('date')
+                input_date.value = String(elem.id).slice(0, -3)
+                input_date.dispatchEvent(event)
+            }
+
+            window.addEventListener('load', () => {
+                // window.scrollTo(0, sessionStorage.getItem('scrollPos_future_shedule_hbr') || 0);
+                // document.querySelector('.table_ocs').scrollTo(sessionStorage.getItem('scrollPosX_future_shedule_hbr'), 0 || 0)
+                // sessionStorage.setItem('scrollPos_future_shedule_hbr', 0) 
+                // sessionStorage.setItem('scrollPosX_future_shedule_hbr', 0)
+
+                document.getElementById('save_button').addEventListener('click', function() {
+                    sessionStorage.setItem('scrollPos_future_shedule_hbr', window.scrollY)
+                    sessionStorage.setItem('scrollPosX_future_shedule_hbr', document.querySelector('.table_ocs').scrollLeft)
+                })
+
+                document.getElementById('start_work').addEventListener('change', function(){
+                    document.getElementById('weekend').checked = false
+                })
+                document.getElementById('end_work').addEventListener('change', function(){
+                    document.getElementById('weekend').checked = false
+                })
+
+                document.getElementById('date').addEventListener('change', function() {
+                        const all_options = document.querySelectorAll('.option_h_c')
+                        const all_start_works = document.querySelectorAll('.start_work_hidden')
+                        const all_end_works = document.querySelectorAll('.end_work_hidden')
+                        const all_weekends = document.querySelectorAll('.is_weekend_hidden')
+                        for (let i =0 ; i< all_options.length; i++){
+                            if (this.value == all_options[i].value){
+                                document.getElementById('comment').value = all_options[i].textContent
+                                if (all_weekends[i].value == 'True'){
+                                    document.getElementById('weekend').checked = true
+                                    document.getElementById('start_work').value = '00:00:00'
+                                    document.getElementById('end_work').value = '00:00:00'
+                                }
+                                else{
+                                    document.getElementById('weekend').checked = false
+                                    if (all_start_works[i].value == '8:00'){
+                                        document.getElementById('start_work').value = '08:00:00'
+                                    }
+                                    else{
+                                        document.getElementById('start_work').value = all_start_works[i].value
+                                    }
+                                    if (all_end_works[i].value == '0:00'){
+                                        document.getElementById('end_work').value = '00:00:00'
+                                    }
+                                    else{
+                                        document.getElementById('end_work').value = all_end_works[i].value
+                                    }
+                                }
+                                break
+                            }
+                        }
+                })
+            });
+        </script>
+        <div class="form_column form_column mobile">
+            <textarea type="text" class="form-control control_panel comment" id="comment" name="comment" placeholder="Комментарий"></textarea>
+            <button type="submit" class="form-control control_panel" id="save_button">Сохранить</button>
+        </div>
+    </form>
+</div>
+{% endif %}
+{% endblock%}

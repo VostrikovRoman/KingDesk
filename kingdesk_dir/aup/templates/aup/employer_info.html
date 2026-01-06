@@ -1,0 +1,42 @@
+{% extends 'aup/layout_2.html' %}
+{% load static %}
+
+{% block title %}KING Desk - {{employer.surname}} {{employer.name}}
+{% endblock %}
+{% block content %}
+    <div class="content text-center profile_content">
+        <h1 class="title">Информация о сотруднике</h1>
+        <div class="container text-center row profile">
+            <div class="container col" style="position: relative;">
+                {% if employer.photo %}
+                <img src="{% static 'sign_in/img/stars.png' %}" class="photo" style="position: absolute; width: 30%; z-index: 2;">
+                <img src="{% static 'sign_in/img/stars.png' %}" class="photo" style="position: absolute; width: 30%; z-index: 2; left: 55%;">
+                <img src="{{employer.photo.url}}" class="photo">
+                {% else %}
+                {% if employer.gender_id.gender_name == 'Мужской' %}
+                <img src="{% static 'hbr/img/user.png' %}" class="photo">
+                {% else %}
+                <img src="{% static 'hbr/img/user (1).png' %}" class="photo">
+                {% endif %}
+                {% endif %}
+            </div>
+            <div class="container col profile_info">
+                <p class="text"><span style="font-family: 'Inter Bold';">Фамилия: </span>{{ employer.surname }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Имя: </span>{{ employer.name }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Отчество: </span>{{ employer.lastname }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Телефон: </span>{% if employer.phone != None %}{{ employer.phone }}{% else %}-{% endif %}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Должность: </span>{{ employer.post_id }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Подразделение: </span>{{ employer.division_id }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Пароль: </span>{{ employer.password }}</p>
+            </div>
+            <div class="row container">
+                <div class="col">
+                    <a href="{% url 'aup_edit_employer' employer.id %}" class="sign_out aup">Изменить информацию</a>
+                </div>
+                <div class="col">
+                    <a href="{% url 'aup_delete_employer' employer.id %}" class="sign_out aup" onclick="return confirmAction('Вы уверены, что хотите удалить сотрудника?')">Удалить сотрудника</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock%}

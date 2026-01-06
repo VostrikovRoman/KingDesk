@@ -1,0 +1,126 @@
+{% extends 'hbr/layout.html' %}
+
+{% block title %}KING Desk - Общее расписание{% endblock %}
+{% block content %}
+<div class="content text-center">
+    <div class="happy_new_year PC" style="margin-top: 5%;">
+            <script src="//megatimer.ru/get/568dfb71e1a87a8c62652aaa419287d1.js"></script>
+        </div>
+    <h1 class="title">Общее расписание</h1>
+    <div class="table_ocs">
+        <div class="stroke_ocs">
+            <div class="name_ocs"></div>
+            {% for i in current_shedules %}
+            {% if i.employer_id.username == user.username %}
+            {% if date_now == i.date %}
+            <div class="time_ocs bold ocs text date_now">
+                {{i.date.day}}.
+                {% for j in months %}
+                {% if j.id == i.date.month %}
+                {{j.alternate_name}}
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="time_ocs bold ocs text">
+                {{i.date.day}}.
+                {% for j in months %}
+                {% if j.id == i.date.month %}
+                {{j.alternate_name}}
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="stroke_ocs">
+            <div class="name_ocs bold ocs text group_ocs">Тренеры-наставники</div>
+        </div>
+        {% for i in employers %}
+        {% if i.division_id == user.division_id and i.post_id.post_code == 'h-05' %}
+        <div class="stroke_ocs">
+            <div class="name_ocs bold ocs text">
+                {{i.surname}} {{i.name}}
+            </div>
+            {% for j in current_shedules %}
+            {% if j.employer_id.username == i.username %}
+            {% if j.is_weekend == True %}
+            <div class="time_ocs text weekend fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">Вых</div>
+            {% else %}
+            {% if j.start_work == j.employer_id.division_id.start_work %}
+            <div class="time_ocs text start fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            {% if j.end_work == j.employer_id.division_id.end_work %}
+            <div class="time_ocs text end fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            <div class="time_ocs text fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %} 
+        <div class="stroke_ocs">
+            <div class="name_ocs bold ocs text group_ocs">ЧБРы</div>
+        </div>
+        {% for i in employers %}
+        {% if i.division_id == user.division_id and i.post_id.post_code != 'h-01' and i.post_id.post_code != 'h-05' and i.post_id.post_code in hbr_employers %}
+        <div class="stroke_ocs">
+            <div class="name_ocs bold ocs text">
+                {{i.surname}} {{i.name}}
+            </div>
+            {% for j in current_shedules %}
+            {% if j.employer_id.username == i.username %}
+            {% if j.is_weekend == True %}
+            <div class="time_ocs text weekend fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">Вых</div>
+            {% else %}
+            {% if j.start_work == j.employer_id.division_id.start_work %}
+            <div class="time_ocs text start fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            {% if j.end_work == j.employer_id.division_id.end_work %}
+            <div class="time_ocs text end fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            <div class="time_ocs text fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}   
+        <div class="stroke_ocs">
+            <div class="name_ocs bold ocs text group_ocs">Работники зала</div>
+        </div>
+        {% for i in employers %}
+        {% if i.division_id == user.division_id and i.post_id.post_code == 'h-01' %}
+        <div class="stroke_ocs">
+            <div class="name_ocs bold ocs text">
+                {{i.surname}} {{i.name}}
+            </div>
+            {% for j in current_shedules %}
+            {% if j.employer_id.username == i.username %}
+            {% if j.is_weekend == True %}
+            <div class="time_ocs text weekend fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">Вых</div>
+            {% else %}
+            {% if j.start_work == j.employer_id.division_id.start_work %}
+            <div class="time_ocs text start fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            {% if j.end_work == j.employer_id.division_id.end_work %}
+            <div class="time_ocs text end fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% else %}
+            <div class="time_ocs text fs" data_tooltip="{{j.employer_id.surname}} {{j.employer_id.name}} - {{j.week_day_id.alternate_name}}, {{j.date}}">{{j.start_work}} - {{j.end_work}}</div>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %} 
+    </div>
+</div>
+{% endblock%}

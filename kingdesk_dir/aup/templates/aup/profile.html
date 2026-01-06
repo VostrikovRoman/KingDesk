@@ -1,0 +1,41 @@
+{% extends 'aup/layout.html' %}
+{% load static %} 
+
+{% block title %}KING Desk - Мой профиль{% endblock %}
+{% block content %}
+    <div class="content text-center profile_content">
+        <h1 class="title">Личный кабинет</h1>
+        <div class="container text-center row profile">
+            <div class="container col" style="position: relative;">
+                {% if user.photo %}
+                <img src="{% static 'sign_in/img/stars.png' %}" class="photo" style="position: absolute; width: 30%; z-index: 2;">
+                <img src="{% static 'sign_in/img/stars.png' %}" class="photo" style="position: absolute; width: 30%; z-index: 2; left: 55%;">
+                <img src="{{user.photo.url}}" class="photo">
+                {% else %}
+                {% if user.gender_id.gender_name == 'Мужской' %}
+                <img src="{% static 'hbr/img/user.png' %}" class="photo">
+                {% else %}
+                <img src="{% static 'hbr/img/user (1).png' %}" class="photo">
+                {% endif %}
+                {% endif %}
+            </div>
+            <div class="container col profile_info">
+                <p class="text"><span style="font-family: 'Inter Bold';">Фамилия: </span>{{ user.surname }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Имя: </span>{{ user.name }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Отчество: </span>{{ user.lastname }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Телефон: </span>{% if user.phone != None %}{{ user.phone }}{% else %}{% endif %}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Должность: </span>{{ user.post_id }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Подразделение: </span>{{ user.division_id }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Пароль: </span>{{ user.password }}</p>
+            </div>
+            <div class="container row">
+                <div class="col">
+                    <a href="{% url 'aup_edit_profile' %}" class="sign_out aup">Редактировать аккаунт</a>
+                </div>
+                <div class="col">
+                    <a href="{% url 'logout' %}" class="sign_out aup" onclick="return confirmAction('Вы уверены, что хотите выйти из аккаунта?')">Выйти из аккаунта</a> 
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock%}

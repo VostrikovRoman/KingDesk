@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="icon" href="{% static 'sign_in/img/crown_.ico' %}">
+    <link rel="stylesheet" href="{% static 'sign_in/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'sign_in/css/mediaScreen.css' %}">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% if request.user.is_authenticated %}
+    {% if user.post_id.post_code in hbr_employers %}
+    <header class="header_PC">
+        <img src="{% static 'sign_in/img/crown_.png' %}" class="logo">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 6%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC"style="left: 12%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 18%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 24%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 30%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 36%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 42%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 48%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 54%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 60%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 66%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 72%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 78%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 84%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 90%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor PC" style="left: 96%;">
+        <ul class="menu">
+            <li class="menu">
+                <nav class="nav">
+                    <ul class="nav">
+                      <li>
+                        <span class="nav-title">Расписание</span>
+                        <ul class="sub-menu">
+                          <li><a href="{% url 'hbr_mcs' %}" class="menu">Моё расписание</a></li>
+                          <li><a href="{% url 'hbr_ocs' %}" class="menu">Общее расписание</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                </nav>
+            </li>
+            <nav class="nav">
+                <ul class="nav">
+                    <li>
+                        <span class="nav-title">Пожелайка</span>
+                        <ul class="sub-menu">
+                            <li><a href="{% url 'hbr_fs' %}" class="menu">Пожелайка</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <li class="menu">
+                <nav class="nav">
+                    <ul class="nav">
+                      <li>
+                        <span class="nav-title">Сотрудники</span>
+                        <ul class="sub-menu">
+                          <li><a href="{% url 'hbr_employers' %}" class="menu">Сотрудники</a></li>
+                          <li><a href="{% url 'hbr_wishes' %}" class="menu">Новогодняя почта</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                </nav>
+            </li>
+        </ul>
+        <a href="{% url 'hbr_profile' %}" class="profile">
+            {% if user.photo %}
+            <img src="{{user.photo.url}}" class="profile">
+            {% else %}
+            {% if user.gender_id.id == 1 %}
+            <img src="{% static 'hbr/img/user.png' %}" class="profile">
+            {% else %}
+            <img src="{% static 'hbr/img/user (1).png' %}" class="profile">
+            {% endif %}
+            {% endif %}
+        </a>
+    </header> 
+    <header class="header_phone">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor phone">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor phone" style="left: 12%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor phone"style="left: 24%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor phone" style="left: 36%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor phone" style="left: 48%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor phone" style="left: 60%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor phone" style="left: 72%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor phone" style="left: 84%;">
+        <img src="{% static 'sign_in/img/bubbles.png' %}" class="decor phone" style="left: 96%;">
+        <img src="{% static 'hbr/img/menu (2).png' %}" class="logo logo_click">
+        <a href="{% url 'hbr_profile' %}" class="profile">
+            {% if user.photo %}
+            <img src="{{user.photo.url}}" class="profile">
+            {% else %}
+            {% if user.gender_id.gender_name == 'Мужской' %}
+            <img src="{% static 'hbr/img/user.png' %}" class="profile">
+            {% else %}
+            <img src="{% static 'hbr/img/user (1).png' %}" class="profile">
+            {% endif %}
+            {% endif %}
+        </a>
+        <div class="hidden_background">
+            <div class="hidden_menu">
+                <ul class="menu">
+                    <li class="menu">
+                        <a class="menu">Расписание</a>
+                        <ul style="list-style: none;">
+                            <li class="menu"><a href="{% url 'hbr_mcs' %}" class="menu">Моё расписание</a></li>
+                            <li class="menu"><a href="{% url 'hbr_ocs' %}" class="menu">Общее расписание</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu"><a href="{% url 'hbr_fs' %}" class="menu">Пожелайка</a></li>
+                    <li class="menu"><a href="{% url 'hbr_employers' %}" class="menu">Сотрудники</a></li>
+                    <li class="menu"><a href="{% url 'hbr_wishes' %}" class="menu">Новогодняя почта</a></li>
+                </ul>
+            </div>
+        </div>
+        <script>
+            document.querySelector('.hidden_background').addEventListener('click', () => {
+                document.querySelector('.hidden_background').style.display = "none"
+            })
+            document.querySelector('.logo_click').addEventListener('click', () => {
+                document.querySelector('.hidden_background').style.display = "flex"
+            })
+        </script>
+    </header>
+    {% block content %}{% endblock %}
+    <script>
+        document.getElementById('hide_panel_button').addEventListener('click', function() {
+            if (document.querySelector('.control_panel').style.height == '5%'){
+                document.querySelector('.control_panel').style.height = 'auto'
+                this.textContent = 'Скрыть панель'
+            }
+            else{
+                document.querySelector('.control_panel').style.height = '5%'
+                this.textContent = 'Показать панель'
+            }
+        })
+
+        function confirmAction(message){
+            if (confirm(message)) {
+                return true;
+            } 
+            else {
+                return false;
+            }
+        }
+    </script>
+    {% else %}
+    <div class="container text-center error_sign_in">
+        <img src="{% static 'sign_in/img/crown.png'%}" class="error_sign_in">
+        <h1>Ой, не туда!</h1>
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="container text-center error_sign_in">
+        <img src="{% static 'sign_in/img/crown.png'%}" class="error_sign_in">
+        <h1>Вы не авторизованы в KING Desk.<br>Войдите в аккаунт по <a href="{% url 'sign_in' %}" class="error_sign_in">ссылке</a>. <br>Спасибо, коллега!</h1>
+    </div>
+    {% endif %}
+</body>
+</html>

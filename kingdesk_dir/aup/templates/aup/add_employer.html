@@ -1,0 +1,47 @@
+{% extends 'aup/layout.html' %}
+{% load static %}
+
+{% block title %}KING Desk - Регистрация сотрудника{% endblock %}
+{% block content %}
+    <div class="content text-center profile_content">
+        <h1 class="title">Зарегистрировать сотрудника</h1>
+        <form method="post" class="edit_profile" action="{% url 'aup_register_employer' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="surname" class="text bold edit_profile">Фамилия:</label>
+            <input type="text" id="surname" name="surname" class="form-control text edit_profile">
+            <label for="name" class="text bold edit_profile">Имя:</label>
+            <input type="text" id="name" name="name" class="form-control text edit_profile">
+            <label for="lastname" class="text bold edit_profile">Отчество:</label>
+            <input type="text" id="lastname" name="lastname" class="form-control text edit_profile">
+            <label for="username" class="text bold edit_profile">Логин:</label>
+            <input type="text" id="username" name="username" class="form-control text edit_profile">
+            <label for="gender" class="text bold edit_profile">Пол:</label>
+            <select name="gender" id="gender" class="text bold form-control edit_profile">
+                {% for i in genders %}
+                <option value="{{i.id}}" class="form-control edit_profile">{{i.gender_name}}</option>
+                {% endfor %}
+            </select>
+            <label for="phone" class="text bold edit_profile">Телефон:</label>
+            <input type="tel" id="phone" name="phone" class="form-control text edit_profile">
+            <label for="post" class="text bold edit_profile">Должность:</label>
+            <select name="post" id="post" class="text bold form-control edit_profile">
+                {% for i in posts %}
+                <option value="{{i.id}}" class="form-control edit_profile">{{i.post_name}}</option>
+                {% endfor %}
+            </select>
+            <label for="division" class="text bold edit_profile">Подразделение:</label>
+            <select name="division" id="division" class="text bold form-control edit_profile">
+                {% for i in divisions %}
+                <option value="{{i.id}}" class="form-control edit_profile">{{i.division_name}}</option>
+                {% endfor %}
+            </select>
+            <label for="password" class="text bold edit_profile">Пароль:</label>
+            <input type="password" id="password" name="password" class="form-control text edit_profile">
+            <label for="photo" class="text bold edit_profile">Фото:</label>
+            <input type="file" id="photo" name="photo" class="form-control text edit_profile">
+            <div class="container text-center">
+                <button type="submit" class="form-control edit_profile text">Сохранить</button>
+            </div>
+        </form>
+    </div>
+{% endblock%}

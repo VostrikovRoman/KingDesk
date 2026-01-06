@@ -1,0 +1,119 @@
+{% extends 'hbr/layout.html' %}
+{% load static %}
+
+{% block title %}KING Desk - Сотрудники{% endblock %}
+{% block content %}
+    <div class="content text-center">
+        <div class="happy_new_year PC" style="margin-top: 5%;">
+            <script src="//megatimer.ru/get/568dfb71e1a87a8c62652aaa419287d1.js"></script>
+        </div>
+        <h1 class="title">Сотрудники</h1>
+        <div class="container employers_list">
+            <p class="text employers group">Директор</p>
+            {% for i in employers %}
+            {% if i.post_id.post_code == 'a-03' and i.division_id == user.division_id %}
+            <a class="container employers" href="{% url 'hbr_employer_info' i.id%}">
+                {% if i.photo %}
+                <img src="{{i.photo.url}}" class="employers">
+                {% else %}
+                {% if i.gender_id.id == 1 %}
+                <img src="{% static 'hbr/img/user.png' %}" class="employers">
+                {% else %}
+                <img src="{% static 'hbr/img/user (1).png' %}" class="employers">
+                {% endif %}
+                {% endif %}
+                <p class="text employers">{{i.surname}} {{i.name}} 
+                    {% if i.lastname != '-'%}
+                    {{i.lastname}}
+                    {% endif %}
+                </p>
+            </a>
+            {% endif %}
+            {% endfor %}
+            <p class="text employers group">Заместитель директора</p>
+            {% for i in employers %}
+            {% if i.post_id.post_code == 'a-02' and i.division_id == user.division_id %}
+            <a class="container employers" href="{% url 'hbr_employer_info' i.id%}">
+                {% if i.photo %}
+                <img src="{{i.photo.url}}" class="employers">
+                {% else %}
+                {% if i.gender_id.id == 1 %}
+                <img src="{% static 'hbr/img/user.png' %}" class="employers">
+                {% else %}
+                <img src="{% static 'hbr/img/user (1).png' %}" class="employers">
+                {% endif %}
+                {% endif %}
+                <p class="text employers">{{i.surname}} {{i.name}} 
+                    {% if i.lastname != '-'%}
+                    {{i.lastname}}
+                    {% endif %}
+                </p>
+            </a>
+            {% endif %}
+            {% endfor %}
+            <p class="text employers group">Менеджеры</p>
+            {% for i in employers %}
+            {% if i.post_id.post_code == 'a-01' and i.division_id == user.division_id %}
+            <a class="container employers" href="{% url 'hbr_employer_info' i.id%}">
+                {% if i.photo %}
+                <img src="{{i.photo.url}}" class="employers">
+                {% else %}
+                {% if i.gender_id.id == 1 %}
+                <img src="{% static 'hbr/img/user.png' %}" class="employers">
+                {% else %}
+                <img src="{% static 'hbr/img/user (1).png' %}" class="employers">
+                {% endif %}
+                {% endif %}
+                <p class="text employers">{{i.surname}} {{i.name}} 
+                    {% if i.lastname != '-'%}
+                    {{i.lastname}}
+                    {% endif %}
+                </p>
+            </a>
+            {% endif %}
+            {% endfor %}
+            <p class="text employers group">Тренеры</p>
+            {% for i in employers %}
+            {% if i.post_id.post_code == 'h-05' and i.division_id == user.division_id %}
+            <a class="container employers" href="{% url 'hbr_employer_info' i.id%}">
+                {% if i.photo %}
+                <img src="{{i.photo.url}}" class="employers">
+                {% else %}
+                {% if i.gender_id.gender_name == 'Мужской' %}
+                <img src="{% static 'hbr/img/user.png' %}" class="employers">
+                {% else %}
+                <img src="{% static 'hbr/img/user (1).png' %}" class="employers">
+                {% endif %}
+                {% endif %}
+                <p class="text employers">{{i.surname}} {{i.name}} 
+                    {% if i.lastname != '-'%}
+                    {{i.lastname}}
+                    {% endif %}
+                </p>
+            </a>
+            {% endif %}
+            {% endfor %}
+            <p class="text employers group">Остальные сотрудники</p>
+            {% for i in employers %}
+            {% if i.post_id.post_code in hbr_employers and i.post_id.post_code != 'h-05' and i.division_id == user.division_id %}
+            <a href="{% url 'hbr_employer_info' i.id%}" class="container employers">
+                {% if i.photo %}
+                <img src="{{i.photo.url}}" class="employers">
+                {% else %}
+                {% if i.gender_id.id == 1 %}
+                <img src="{% static 'hbr/img/user.png' %}" class="employers">
+                {% else %}
+                <img src="{% static 'hbr/img/user (1).png' %}" class="employers">
+                {% endif %}
+                {% endif %}
+                <p class="text employers">{{i.surname}} {{i.name}} 
+                    {% if i.lastname != '-'%}
+                    {{i.lastname}}
+                    {% endif %}
+                </p>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock%}

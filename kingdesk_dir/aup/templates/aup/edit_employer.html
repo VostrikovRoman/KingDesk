@@ -1,0 +1,63 @@
+{% extends 'aup/layout.html' %}
+{% load static %}
+
+{% block title %}KING Desk - Изменение информации о сотруднике{% endblock %}
+{% block content %}
+    <div class="content text-center profile_content">
+        <h1 class="title">Изменить информацию о сотруднике</h1>
+        <form method="post" class="edit_profile" action="{% url 'aup_update_employer' employer.id %}">
+            {% csrf_token %}
+            <label for="surname" class="text bold edit_profile">Фамилия:</label>
+            <input type="text" id="surname" name="surname" class="form-control text edit_profile" value="{{employer.surname}}">
+            <label for="name" class="text bold edit_profile">Имя:</label>
+            <input type="text" id="name" name="name" class="form-control text edit_profile" value="{{employer.name}}">
+            <label for="lastname" class="text bold edit_profile">Отчество:</label>
+            <input type="text" id="lastname" name="lastname" class="form-control text edit_profile" value="{{employer.lastname}}">
+            <label for="phone" class="text bold edit_profile">Телефон:</label>
+            <input type="tel" id="phone" name="phone" class="form-control text edit_profile" value="{{employer.phone}}">
+            {% if user.id != employer.id %}
+            <label for="post" class="text bold edit_profile">Должность:</label>
+            <select name="post" id="post" class="text bold form-control edit_profile">
+                {% for i in posts %}
+                <option value="{{i.id}}" class="form-control edit_profile">{{i.post_name}}</option>
+                {% endfor %}
+            </select>
+            <label for="division" class="text bold edit_profile">Подразделение:</label>
+            <select name="division" id="division" class="text bold form-control edit_profile">
+                {% for i in divisions %}
+                <option value="{{i.id}}" class="form-control edit_profile">{{i.division_name}}</option>
+                {% endfor %}
+            </select>
+            {% else %}
+            {% if user.post_id.post_code != 'a-01' %}
+            <label for="post" class="text bold edit_profile">Должность:</label>
+            <select name="post" id="post" class="text bold form-control edit_profile">
+                {% for i in posts %}
+                <option value="{{i.id}}" class="form-control edit_profile">{{i.post_name}}</option>
+                {% endfor %}
+            </select>
+            <label for="division" class="text bold edit_profile">Подразделение:</label>
+            <select name="division" id="division" class="text bold form-control edit_profile">
+                {% for i in divisions %}
+                <option value="{{i.id}}" class="form-control edit_profile">{{i.division_name}}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+            {% endif %}
+            <label for="password" class="text bold edit_profile">Пароль:</label>
+            <input type="text" id="password" name="password" class="form-control text edit_profile" value="{{employer.password}}">
+            
+            <div class="container text-center">
+                <button type="submit" class="form-control edit_profile text" onclick="return confirmAction('Вы уверены, что хотите изменить информацию о сотруднике?')">Сохранить</button>
+            </div>
+        </form>
+        <script>
+            window.addEventListener('load', () => {
+                const post_id = '{{employer.post_id.id}}'
+                const division_id = '{{employer.division_id.id}}'
+                document.getElementById('post').value = post_id
+                document.getElementById('division').value = division_id
+            })
+        </script>
+    </div>
+{% endblock%}

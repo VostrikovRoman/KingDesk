@@ -1,0 +1,28 @@
+{% extends 'hbr/layout.html' %}
+{% load static %}
+
+{% block title %}KING Desk - Новогодняя почта{% endblock %}
+{% block content %}
+    <div class="content text-center profile_content">
+        <div class="happy_new_year PC" style="margin-top: 5%;">
+            <script src="//megatimer.ru/get/568dfb71e1a87a8c62652aaa419287d1.js"></script>
+        </div>
+        <h1 class="title">Новогодняя почта</h1>
+        <form method="post" class="edit_profile" action="{% url 'hbr_send_wish' user.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="employer_to" class="text bold edit_profile">Кому:</label>
+            <select id="employer_to" class="form-control text edit_profile" name="employer_to">
+                {% for i in employers %}
+                {% if i.id != user.id %}
+                <option id="{{i.id}}" class="option_date" value="{{i.surname}} {{i.name}}">{{i.surname}} {{i.name}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <label for="phone" class="text bold edit_profile">Сообщение:</label>
+            <textarea type="text" id="message" name="message" class="form-control text edit_profile"></textarea>
+            <div class="container text-center">
+                <button type="submit" class="form-control edit_profile text">Отправить</button>
+            </div>
+        </form>
+    </div>
+{% endblock%}
