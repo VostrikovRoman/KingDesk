@@ -23,6 +23,7 @@
                 <p class="text"><span style="font-family: 'Inter Bold';">Фамилия: </span>{{ user.surname }}</p>
                 <p class="text"><span style="font-family: 'Inter Bold';">Имя: </span>{{ user.name }}</p>
                 <p class="text"><span style="font-family: 'Inter Bold';">Отчество: </span>{{ user.lastname }}</p>
+                <p class="text"><span style="font-family: 'Inter Bold';">Дата рождения: </span>{{ user.birthday }}</p>
                 <p class="text"><span style="font-family: 'Inter Bold';">Телефон: </span>{% if user.phone != None %}{{ user.phone }}{% else %}-{% endif %}</p>
                 <p class="text"><span style="font-family: 'Inter Bold';">Должность: </span>{{ user.post_id }}</p>
                 <p class="text"><span style="font-family: 'Inter Bold';">Подразделение: </span>{{ user.division_id }}</p>

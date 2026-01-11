@@ -118,6 +118,7 @@ def update_profile(request, user_id):
         return redirect ('hbr_edit_profile')
 
 def employers(request):
+    date_now = datetime.now().date()
     hbr_employers = ['h-01', 'h-02', 'h-03', 'h-04', 'h-05']
     aup_employers = ['a-01', 'a-02', 'a-03']
     employers = Employers.objects.order_by('surname')
@@ -126,7 +127,7 @@ def employers(request):
         if i.username == request.user.username:
             user = i
             break
-    return render(request, 'hbr/employers.html', {'user':user, 'employers':employers, 'hbr_employers':hbr_employers, 'aup_employers':aup_employers})
+    return render(request, 'hbr/employers.html', {'user':user, 'date_now':date_now, 'employers':employers, 'hbr_employers':hbr_employers, 'aup_employers':aup_employers})
 
 class Employer_Detail_View(DetailView):
     model = Employers
